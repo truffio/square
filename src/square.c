@@ -1,4 +1,5 @@
 #include <pebble.h>
+#include "languages.h"
 
 #define KEY_TEXT_COLOR 0
 #define KEY_INVERT_COLORS 1
@@ -89,7 +90,9 @@ static void update_time() {
   struct tm *tick_time = localtime(&temp);
 	
   static char time_buffer[] = "00:00";
-	static char date_buffer[] = "WWW MMM DD";
+  static char date_buffer[] = "WWW MMM DD";
+  static char weekday_buffer[] = "WWWWWWWWW";
+  static char month_buffer[] = "MMMMMMMMM";
   
   if(clock_is_24h_style() == true) {
     strftime(time_buffer, sizeof("00:00"), "%H:%M", tick_time);
@@ -99,9 +102,30 @@ static void update_time() {
 	
 	text_layer_set_text(s_time_layer, time_buffer);
 	
-	strftime(date_buffer, sizeof("WWW MMM DD"), "%a %b %d", tick_time);
+	// strftime(date_buffer, sizeof("WWW MMM DD"), "%a %b %d", tick_time);
 	
-	text_layer_set_text(s_date_layer, date_buffer);
+	// text_layer_set_text(s_date_layer, date_buffer);
+
+	strftime(weekday_buffer, sizeof(weekday_buffer), "%A", tick_time);
+
+	// For localization
+	if (strcmp(date_buffer, "Monday") == 0) {
+		strftime(date_buffer, sizeof(date_buffer), englishWeekdays[1], tick_time);
+	} else if(strcmp(date_buffer, "Tuesday") == 0) {
+		strftime(date_buffer, sizeof(date_buffer), englishWeekdays[1], tick_time);
+	} else if(strcmp(date_buffer, "Wednesday") == 0) {
+		strftime(date_buffer, sizeof(date_buffer), englishWeekdays[1], tick_time);
+	} else if(strcmp(date_buffer, "Thursday") == 0) {
+		strftime(date_buffer, sizeof(date_buffer), englishWeekdays[1], tick_time);
+	} else if(strcmp(date_buffer, "Friday") == 0) {
+		strftime(date_buffer, sizeof(date_buffer), englishWeekdays[1], tick_time);
+	} else if(strcmp(date_buffer, "Saturday") == 0) {
+		strftime(date_buffer, sizeof(date_buffer), englishWeekdays[1], tick_time);
+	} else if(strcmp(date_buffer, "Sunday") == 0) {
+		strftime(date_buffer, sizeof(date_buffer), englishWeekdays[1], tick_time);
+	} else {
+		text_layer_set_text(s_date_layer, "Oop");
+	}
 }
 
 static void charge_handler() {
